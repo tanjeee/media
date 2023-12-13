@@ -1,9 +1,11 @@
 <?php
 
+use App\Models\Comment;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\PostController;
+use App\Http\Controllers\API\CommentController;
 
 
 //user
@@ -24,3 +26,9 @@ Route::post('posts/create', [PostController::class, 'create']);
 Route::post('posts/delete', [PostController::class, 'delete']);
 Route::post('posts/update', [PostController::class, 'update']);
 Route::get('posts', [PostController::class, 'posts']);
+
+//comment
+Route::post('comments/create', [CommentController::class, 'create']);
+Route::post('comments/delete', [CommentController::class, 'delete']);
+Route::post('comments/update', [CommentController::class, 'update']);
+Route::get('posts/comments', [CommentController::class, 'comments']);
