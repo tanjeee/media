@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Http\Controllers\Controller;
 use Auth;
 use Illuminate\Http\Request;
+use Storage;
 
 class PostController extends Controller
 {
@@ -27,6 +28,48 @@ class PostController extends Controller
             'success'=>true,
             'message'=>'posted',
             'post'=>$post
+        ]);
+    }
+
+    public function update(Request $request){
+        $post = Post::find($request->id);
+
+        //check if user is editing own post
+        if(Auth::user()->id != $request->id){
+            return response()->json([
+                'success'=>false,
+                'message'=>'Unauthorized user'
+            ]);
+        }
+        $post->desc = $request->desc;
+        $post->update();
+        return response()->json([
+            'success'=>true,
+            'message'=> 'Post edited'
+        ]);
+    }
+
+    public function delete(Request $request){
+        $post = Post::find($request->id);
+
+        //check if user is editing own post
+        if(Auth::user()->id != $request->id){
+            return response()->json([
+                'success'=>false,
+                'message'=>'Unauthorized user'
+            ]);
+        }
+        
+        //check if post has photo to delete
+        if($post->photo != ''){
+            Storage::delete('public/posts/'.$post->photo);
+        }
+
+        $post->delete();
+
+        return response()->json([
+            'success'=>true,
+            'message'=> 'Post deleted'
         ]);
     }
 }
