@@ -10,34 +10,23 @@ use Illuminate\Http\Request;
 class PostController extends Controller
 {
     public function create(Request $request){
-        // Check if there is an authenticated user
-        if ($user = Auth::user()) {
-            $post = new Post;
-            $post->user_id = $user->id;
-            $post->desc = $request->desc;
-    
-            // Check if the post has a photo
-            if ($request->photo != '') {
-                $photo = time() . 'jpg';
-                file_put_contents('storage/posts/' . $photo, base64_decode($request->photo));
-                $post->photo = $photo;
-            }
-    
-            $post->save();
-            $post->user;
-    
-            return response()->json([
-                'success' => true,
-                'message' => 'posted',
-                'post' => $post
-            ]);
+        $post = new Post;
+        $post->user_id = Auth::user()->id;
+        $post->desc = $request->desc;
+
+        //check if post have photo
+        if($request->photo !=''){
+            $photo = time().'jpg';
+            file_put_contents('storage/posts/'.$photo,base64_decode($request->photo));
+            $post->photo = $photo;
         }
-    
-        // Handle the case where there is no authenticated user
+        $post->save();
+        $post->user;
+
         return response()->json([
-            'success' => false,
-            'message' => 'User not authenticated',
-        ], 401);
+            'success'=>true,
+            'message'=>'posted',
+            'post'=>$post
+        ]);
     }
-    
 }
