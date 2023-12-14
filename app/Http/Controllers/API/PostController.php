@@ -74,21 +74,27 @@ class PostController extends Controller
     }
 
     public function posts()
-    {
-    $posts = Post::with(['comments', 'likes'])->orderBy('id', 'desc')->get();
+{
+    $posts = Post::orderBy('id', 'desc')->get();
     
     foreach ($posts as $post) {
         // get user post
         $post->user;
 
         // comments count
-        $post['commentsCount'] = $post->comments->count();
+        $post['commentsCount'] = count($post->comments ?? []);
 
         // likes count
-        $post['likesCount'] = $post->likes->count();
+        $post['likesCount'] = count($post->likes ?? []);
 
         // check if the user likes their own post
-        $post['selfLike'] = $post->likes->contains('user_id', Auth::user()->id);
+        $post['selfLike'] = false;
+        
+        foreach ($post->likes ?? [] as $like) {
+            if ($like->user_id == Auth::user()->id) {
+                $post['selfLike'] = true;
+            }
+        }
     }
 
     return response()->json([
@@ -96,6 +102,5 @@ class PostController extends Controller
         'posts' => $posts
     ]);
 }
-
 
 }
