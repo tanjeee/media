@@ -6,6 +6,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\PostController;
 use App\Http\Controllers\API\CommentController;
+use App\Http\Controllers\API\LikeController;
 
 
 //user
@@ -32,3 +33,6 @@ Route::post('comments/create', [CommentController::class, 'create']);
 Route::post('comments/delete', [CommentController::class, 'delete']);
 Route::post('comments/update', [CommentController::class, 'update']);
 Route::post('posts/comments', [CommentController::class, 'comments']);
+
+//like
+Route::post('posts/like', [LikeController::class, 'like']);
