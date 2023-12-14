@@ -37,7 +37,7 @@ class CommentController extends Controller
         $comment->update();
 
         return response()->json([
-            'success' => false,
+            'success' => true,
             'message' => 'Comment edited'
         ]);
     }
@@ -56,7 +56,7 @@ class CommentController extends Controller
         $comment->delete();
 
         return response()->json([
-            'success' => false,
+            'success' => true,
             'message' => 'Comment deleted'
         ]);
     }
@@ -70,7 +70,7 @@ class CommentController extends Controller
         }
 
         return response()->json([
-            'success' => false,
+            'success' => true,
             'comments' => $comments
         ]);
 
