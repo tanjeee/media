@@ -13,7 +13,7 @@ class LikeController extends Controller
         $like = Like::where('post_id',$request->id)->where('user_id',Auth::user()->id)->get();
 
         //check if it returns 0 then this post is not liked and should be liked or unliked
-        if(count($like)>0){
+        if($like){
             //prevent like more than 1 time
             $like[0]->delete();
             return response()->json([
