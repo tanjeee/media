@@ -82,13 +82,13 @@ class PostController extends Controller
         $post->user;
 
         // comments count
-        $post['commentsCount'] = $post->comments->count();
+        $post['commentsCount'] = $post->comments ? $post->comments->count() : 0;
 
         // likes count
-        $post['likesCount'] = $post->likes->count();
+        $post['likesCount'] = $post->likes ? $post->likes->count() : 0;
 
         // check if the user likes their own post
-        $post['selfLike'] = $post->likes->contains('user_id', Auth::user()->id);
+        $post['selfLike'] = $post->likes ? $post->likes->contains('user_id', Auth::user()->id) : false;
     }
 
     return response()->json([
@@ -96,6 +96,7 @@ class PostController extends Controller
         'posts' => $posts
     ]);
     }
+
 
 
 }
