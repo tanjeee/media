@@ -26,7 +26,7 @@ class CommentController extends Controller
         $comment = Comment::find($request->id);
 
         //check if user is editing his own comment
-        if($comment->id != Auth::user()->id){
+        if($comment->user_id != Auth::user()->id){
             return response()->json([
                 'success' => false,
                 'message' => 'Unauthorized user'
