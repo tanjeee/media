@@ -82,15 +82,15 @@ class PostController extends Controller
         $post->user;
 
         // comments count
-        $post['commentsCount'] = count($post->comments ?? []);
+        $post['commentsCount'] = count($post->comments);
 
         // likes count
-        $post['likesCount'] = count($post->likes ?? []);
+        $post['likesCount'] = count($post->likes);
 
         // check if the user likes their own post
         $post['selfLike'] = false;
         
-        foreach ($post->likes ?? [] as $like) {
+        foreach ($post->likes as $like) {
             if ($like->user_id == Auth::user()->id) {
                 $post['selfLike'] = true;
             }
