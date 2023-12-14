@@ -82,21 +82,20 @@ class PostController extends Controller
         $post->user;
 
         // comments count
-        $post['commentsCount'] = $post->comments ? $post->comments->count() : 0;
+        $post['commentsCount'] = $post->comments->count();
 
         // likes count
-        $post['likesCount'] = $post->likes ? $post->likes->count() : 0;
+        $post['likesCount'] = $post->likes->count();
 
         // check if the user likes their own post
-        $post['selfLike'] = $post->likes ? $post->likes->contains('user_id', Auth::user()->id) : false;
+        $post['selfLike'] = $post->likes->contains('user_id', Auth::user()->id);
     }
 
     return response()->json([
         'success' => true,
         'posts' => $posts
     ]);
-    }
-
+}
 
 
 }
