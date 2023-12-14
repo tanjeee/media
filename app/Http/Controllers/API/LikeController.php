@@ -15,7 +15,7 @@ class LikeController extends Controller
         //check if it returns 0 then this post is not liked and should be liked or unliked
         if($like){
             //prevent like more than 1 time
-            $like[0]->delete();
+            $like->delete();
             return response()->json([
                 'success' => true,
                 'message' => 'Unliked'
