@@ -36,3 +36,7 @@ Route::post('posts/comments', [CommentController::class, 'comments']);
 
 //like
 Route::post('posts/like', [LikeController::class, 'like']);
+
+//upload photo post
+Route::post('save_user_info', [AuthController::class, 'saveUserInfo']);
+
