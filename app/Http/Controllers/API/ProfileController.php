@@ -7,13 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
     public function update_profile(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'profile_photo' => 'nullable|image|mimes:jpg,png,bmp',
+            'profile_photo' => 'nullable|string', // Change the validation rule
         ]);
 
         if ($validator->fails()) {
@@ -25,32 +26,41 @@ class ProfileController extends Controller
 
         $user = auth()->user();
 
-        if ($request->hasFile('profile_photo')) {
+        if ($request->has('profile_photo')) {
+            $base64Image = $request->input('profile_photo');
+            $imageData = base64_decode($base64Image);
+
+            // Generate a unique filename
+            $filename = time() . '_profile_photo.jpg';
+
+            // Save the image to the storage disk (public disk in this example)
+            Storage::disk('public')->put($filename, $imageData);
+
+            // Delete the old profile photo if it exists
             if ($user->profile_photo) {
-                $old_path = public_path('images') . $user->profile_photo;
-                if (File::exists($old_path)) {
-                    File::delete($old_path);
+                $old_path = 'images/' . $user->profile_photo;
+                if (Storage::disk('public')->exists($old_path)) {
+                    Storage::disk('public')->delete($old_path);
                 }
             }
 
-            $image = $request->file('profile_photo');
-            $image_name = time() . '.' . $image->getClientOriginalExtension();
+            $user->update([
+                'profile_photo' => $filename,
+            ]);
 
-            $image->move(public_path('images'), $image_name);
+            $imageUrl = url('images/' . $filename);
+
+            return response()->json([
+                'message' => 'Profile successfully updated',
+                'user' => $user,
+                'image_url' => $imageUrl,
+            ], 200);
         } else {
-            $image_name = $user->profile_photo;
+            
+            return response()->json([
+                'success'=>false,
+                'message' => 'Profile photo not provided',
+            ], 400);
         }
-
-        $user->update([
-            'profile_photo' => $image_name,
-        ]);
-
-        $imageUrl = url('images/' . $image_name);
-
-        return response()->json([
-            'message' => 'Profile successfully updated',
-            'user' => $user,
-            'image_url' => $imageUrl,
-        ], 200);
     }
 }
