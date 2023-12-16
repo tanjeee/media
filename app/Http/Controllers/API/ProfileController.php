@@ -53,4 +53,18 @@ class ProfileController extends Controller
             'image_url' => $imageUrl,
         ], 200);
     }
+
+    public function getProfile(Request $request)
+{
+    $user = auth()->user();
+
+    $imagePath = public_path('images/' . $user->profile_photo);
+
+    if (file_exists($imagePath)) {
+        return response()->file($imagePath);
+    } else {
+        return response()->json(['error' => 'Image not found'], 404);
+    }
+}
+
 }
