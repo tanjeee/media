@@ -27,7 +27,7 @@ class ProfileController extends Controller
 
         if ($request->hasFile('profile_photo')) {
             if ($user->profile_photo) {
-                $old_path = public_path('images') . '/' . $user->profile_photo;
+                $old_path = public_path('images') . $user->profile_photo;
                 if (File::exists($old_path)) {
                     File::delete($old_path);
                 }
@@ -53,18 +53,4 @@ class ProfileController extends Controller
             'image_url' => $imageUrl,
         ], 200);
     }
-
-    public function get_profile(Request $request)
-{
-    $user = auth()->user();
-
-    return response()->json([
-        'user' => [
-            'id' => $user->id,
-            'name' => $user->name,
-            'email' => $user->email,
-            'profile_photo' => $user->profile_photo,
-        ],
-    ]);
-}
 }
