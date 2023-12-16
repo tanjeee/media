@@ -53,4 +53,18 @@ class ProfileController extends Controller
             'image_url' => $imageUrl,
         ], 200);
     }
+
+    public function getProfile(Request $request)
+    {
+        $user = auth()->user();
+
+        return response()->json([
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'profile_photo' => $user->profile_photo,
+            ],
+        ]);
+    }
 }
