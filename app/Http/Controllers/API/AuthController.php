@@ -74,15 +74,22 @@ class AuthController extends Controller
     }
 
     public function refresh()
-    {
-        return response()->json([
-            'user' => Auth::user(),
-            'authorization' => [
-                'token' => Auth::refresh(),
-                'type' => 'bearer',
-            ]
-        ]);
-    }
+{
+    $user = Auth::user();
+
+    return response()->json([
+        'user' => [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'profile_photo' => $user->profile_photo,
+        ],
+        'authorization' => [
+            'token' => Auth::refresh(),
+            'type' => 'bearer',
+        ]
+    ]);
+}
 
     public function saveUserInfo(Request $request){
         $user = User::find(Auth::user()->id);
