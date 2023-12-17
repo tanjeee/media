@@ -10,67 +10,26 @@ use Illuminate\Http\UploadedFile;
 
 class ProfileController extends Controller
 {
-    public function update_profile(Request $request)
+public function update_profile(Request $request)
 {
-    $validator = Validator::make($request->all(), [
-        'profile_photo' => 'nullable|image|mimes:jpg,png,bmp',
-    ]);
-
-    if ($validator->fails()) {
-        return response()->json([
-            'message' => 'Validation fails',
-            'errors' => $validator->errors(),
-        ], 422);
-    }
-
     $user = auth()->user();
 
+    // Check if the file was included in the request
     if ($request->hasFile('profile_photo')) {
-        if ($user->profile_photo) {
-            $old_path = public_path('images') . $user->profile_photo;
-            if (File::exists($old_path)) {
-                File::delete($old_path);
-            }
-        }
+        $file = $request->file('profile_photo');
 
-        $image = $request->file('profile_photo');
-        $image_name = time() . '.' . $image->getClientOriginalExtension();
+        // Generate a unique filename
+        $filename = 'profile_photo_' . $user->id . '.' . $file->getClientOriginalExtension();
 
-        $image->move(public_path('images'), $image_name);
+        // Move the file to the desired directory
+        $file->move(public_path('images'), $filename);
 
-        // Update the database with the new image name
-        $user->update([
-            'profile_photo' => $image_name,
-        ]);
+        // Update the user's profile photo field in the database
+        $user->update(['profile_photo' => $filename]);
 
-        // Check if the client requested an image
-        if ($request->expectsJson()) {
-            $imageUrl = url('images/' . $image_name);
-
-            return response()->json([
-                'message' => 'Profile successfully updated',
-                'user' => $user,
-                'image_url' => $imageUrl,
-            ], 200);
-        } else {
-            // If the client didn't request JSON, return the image directly
-            return response()->file(public_path('images/' . $image_name));
-        }
+        return response()->json(['message' => 'Image updated successfully']);
     } else {
-        // Handle non-image updates as before
-        $image_name = $user->profile_photo;
-
-        $user->update([
-            'profile_photo' => $image_name,
-        ]);
-
-        $imageUrl = url('images/' . $image_name);
-
-        return response()->json([
-            'message' => 'Profile successfully updated',
-            'user' => $user,
-            'image_url' => $imageUrl,
-        ], 200);
+        return response()->json(['error' => 'No file provided'], 400);
     }
 }
 
