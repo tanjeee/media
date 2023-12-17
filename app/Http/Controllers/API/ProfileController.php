@@ -38,6 +38,11 @@ class ProfileController extends Controller
 
         $image->move(public_path('images'), $image_name);
 
+        // Update the database with the new image name
+        $user->update([
+            'profile_photo' => $image_name,
+        ]);
+
         // Check if the client requested an image
         if ($request->expectsJson()) {
             $imageUrl = url('images/' . $image_name);
