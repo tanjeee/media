@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\UploadedFile;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+
 
 class ProfileController extends Controller
 {
@@ -74,17 +76,18 @@ class ProfileController extends Controller
     }
 }
 
-    public function get_profile(Request $request)
+public function get_profile(Request $request)
 {
     $user = auth()->user();
-
     $imagePath = public_path('images/' . $user->profile_photo);
 
     if (file_exists($imagePath)) {
-        return response()->file($imagePath);
+        return (new BinaryFileResponse($imagePath))
+            ->headers(['Content-Type' => 'image/jpeg']);
     } else {
         return response()->json(['error' => 'Image not found'], 404);
     }
 }
+
 
 }
