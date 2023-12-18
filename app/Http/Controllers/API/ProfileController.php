@@ -86,7 +86,6 @@ class ProfileController extends Controller
 
             return response()->json([
                 'content_type' => $contentType,
-                'image' => Response::file($imagePath)->header('Content-Type', $contentType)->getContent(),
             ], 200);    
     } else {
         return response()->json(['error' => 'Image not found'], 404);
