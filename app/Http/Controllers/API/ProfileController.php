@@ -55,6 +55,7 @@ class ProfileController extends Controller
 }
 
 
+
     public function get_profile(Request $request)
 {
     $user = auth()->user();
