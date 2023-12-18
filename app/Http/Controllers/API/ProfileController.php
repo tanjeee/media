@@ -81,7 +81,13 @@ class ProfileController extends Controller
     $imagePath = public_path('images/' . $user->profile_photo);
 
     if (file_exists($imagePath)) {
-        return response()->file($imagePath, ['Content-Type' => 'image/jpeg']);
+        $imageUrl = url('images/' . $user->profile_photo);
+
+        return response()->json([
+            'message' => 'Profile image retrieved successfully',
+            'user' => $user,
+            'image_url' => $imageUrl,
+        ], 200);
     } else {
         return response()->json(['error' => 'Image not found'], 404);
     }
