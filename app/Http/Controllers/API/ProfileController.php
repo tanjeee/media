@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Http\UploadedFile;
 
 class ProfileController extends Controller
@@ -82,11 +81,7 @@ class ProfileController extends Controller
     $imagePath = public_path('images/' . $user->profile_photo);
 
     if (file_exists($imagePath)) {
-        $contentType = mime_content_type($imagePath);
-
-            return response()->json([
-                'content_type' => $contentType,
-            ], 200);    
+        return response()->file($imagePath, ['Content-Type' => 'image/jpeg']);
     } else {
         return response()->json(['error' => 'Image not found'], 404);
     }
