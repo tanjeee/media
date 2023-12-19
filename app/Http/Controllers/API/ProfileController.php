@@ -90,18 +90,19 @@ public function edit_user(Request $request, $id)
         $user->name = $request->input('name');
         $user->save();
 
-        $user->update(['name' => $oldName]);
-
         return response()->json([
-        'success'=>true,
-        'message' => 'Edit name success'], 200);
+            'success' => true,
+            'message' => 'Edit name success'
+        ], 200);
 
     } else {
         return response()->json([
-            'success'=>false,
-            'message' => 'Name is already in use'], 422);
+            'success' => false,
+            'message' => 'Name is already in use'
+        ], 422);
     }
 }
+
 
 
 }
