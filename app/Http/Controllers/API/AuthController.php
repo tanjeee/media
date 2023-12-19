@@ -16,34 +16,41 @@ class AuthController extends Controller
     }
 
     public function login(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
-        $credentials = $request->only('email', 'password');
-        $token = Auth::attempt($credentials);
-        
-        if (!$token) {
-            return response()->json([
-                'message' => 'Unauthorized',
-            ], 401);
-        }
+{
+    $request->validate([
+        'email' => 'required|string|email',
+        'password' => 'required|string',
+    ]);
 
-        $user = Auth::user();
+    $credentials = $request->only('email', 'password');
+    $token = Auth::attempt($credentials);
+
+    if (!$token) {
         return response()->json([
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'profile_photo' => $user->profile_photo,
-            ],
-            'authorization' => [
-                'token' => $token,
-                'type' => 'bearer',
-            ]
-        ]);
+            'message' => 'Unauthorized',
+        ], 401);
     }
+
+    $user = Auth::user();
+    $profile_photo_url = null;
+
+    if ($user->profile_photo) {
+        $profile_photo_url = url('images/' . $user->profile_photo);
+    }
+
+    return response()->json([
+        'user' => [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'profile_photo' => $profile_photo_url,
+        ],
+        'authorization' => [
+            'token' => $token,
+            'type' => 'bearer',
+        ]
+    ]);
+}
 
     public function register(Request $request)
     {
