@@ -23,6 +23,9 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/profile/get-profile', [ProfileController::class, 'get_profile']);
 });
 
+//Edit user
+Route::get('/profile/edit-username/{id}',[ProfileController::class, 'edit_user']);
+
 //post
 Route::post('posts/create', [PostController::class, 'create']);
 Route::post('posts/delete', [PostController::class, 'delete']);
@@ -40,4 +43,5 @@ Route::post('posts/like', [LikeController::class, 'like']);
 
 //upload photo post
 Route::post('save_user_info', [AuthController::class, 'saveUserInfo']);
+
 

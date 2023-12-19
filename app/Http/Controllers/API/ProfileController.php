@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use App\Models\User;
 use Illuminate\Http\UploadedFile;
 
 class ProfileController extends Controller
@@ -74,5 +75,33 @@ class ProfileController extends Controller
         return response()->json(['error' => 'Image not found'], 404);
     }
 }
+
+public function edit_user(Request $request, $id)
+{
+    $user = User::findOrFail($id);
+
+    $request->validate([
+        'name' => 'required|string|max:255',
+    ]);
+
+    if ($user->name !== $request->input('name')) {
+        $oldName = $user->name;
+
+        $user->name = $request->input('name');
+        $user->save();
+
+        $user->update(['name' => $oldName]);
+
+        return response()->json([
+        'success'=>true,
+        'message' => 'Edit name success'], 200);
+
+    } else {
+        return response()->json([
+            'success'=>false,
+            'message' => 'Name is already in use'], 422);
+    }
+}
+
 
 }
