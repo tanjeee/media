@@ -76,7 +76,7 @@ class ProfileController extends Controller
     }
 }
 
-public function edit_user(Request $request, $id)
+public function edit_user($id,Request $request)
 {
     $user = User::findOrFail($id);
 
