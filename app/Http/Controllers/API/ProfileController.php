@@ -76,9 +76,9 @@ class ProfileController extends Controller
     }
 }
 
-public function edit_user(Request $request)
+public function edit_user($id,Request $request)
 {
-    $user = $request->user(); // Retrieve the user model, not just the ID
+    $user = User::findOrFail($id);
 
     $request->validate([
         'name' => 'required|string|max:255',
@@ -102,7 +102,6 @@ public function edit_user(Request $request)
         ], 422);
     }
 }
-
 
 
 
