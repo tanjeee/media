@@ -24,7 +24,7 @@ Route::middleware('auth:api')->group(function () {
 });
 
 //Edit user
-Route::post('/profile/edit-username/{id}', [ProfileController::class, 'edit_user']);
+Route::post('/profile/edit-username', [ProfileController::class, 'edit_user']);
 
 //post
 Route::post('posts/create', [PostController::class, 'create']);
