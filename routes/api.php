@@ -21,10 +21,10 @@ Route::controller(AuthController::class)->group(function () {
 Route::middleware('auth:api')->group(function () {
     Route::post('/profile/update-profile', [ProfileController::class, 'update_profile']);
     Route::get('/profile/get-profile', [ProfileController::class, 'get_profile']);
+    
+    //Edit user
+    Route::post('/profile/edit-username/{id}', [ProfileController::class, 'edit_user']);
 });
-
-//Edit user
-Route::post('/profile/edit-username/{id}', [ProfileController::class, 'edit_user']);
 
 //post
 Route::post('posts/create', [PostController::class, 'create']);
