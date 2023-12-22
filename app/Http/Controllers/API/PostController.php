@@ -7,10 +7,12 @@ use App\Http\Controllers\Controller;
 use Auth;
 use Illuminate\Http\Request;
 use Storage;
+use Log;
 
 class PostController extends Controller
 {
     public function create(Request $request){
+        Log::info('Received request data: ' . json_encode($request->all()));
         $post = new Post;
         $post->user_id = Auth::user()->id;
         $post->desc = $request->desc;
