@@ -20,7 +20,7 @@ Route::controller(AuthController::class)->group(function () {
 //profile photo
 Route::middleware('auth:api')->group(function () {
     Route::post('/profile/update-profile', [ProfileController::class, 'update_profile']);
-    Route::get('/profile/get-profile', [ProfileController::class, 'get_profile']);
+    Route::post('/profile/get-profile', [ProfileController::class, 'get_profile']);
     //Edit user
     Route::post('/profile/edit-username/{id}', [ProfileController::class, 'edit_user']);
 });
