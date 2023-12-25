@@ -89,7 +89,7 @@ class PostController extends Controller
         $post['likesCount'] = $post->likes ? $post->likes->count() : 0;
 
         // check if the user likes their own post
-        $post['selfLike'] = $post->likes ? $post->likes->contains('user_id', Auth::user()->id) : false;
+        $post['selfLike'] = $post->likes ? $post->likes->contains('user_id', optional(Auth::user())->id) : false;
     }
 
     return response()->json([
