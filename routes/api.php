@@ -29,16 +29,16 @@ Route::middleware('auth:api')->group(function () {
 Route::post('post/create', [PostController::class, 'create']);
 Route::post('post/delete', [PostController::class, 'delete']);
 Route::post('post/update', [PostController::class, 'update']);
-Route::post('post', [PostController::class, 'posts']);
+Route::get('post', [PostController::class, 'posts']);
 
 //comment
 Route::post('comments/create', [CommentController::class, 'create']);
 Route::post('comments/delete', [CommentController::class, 'delete']);
 Route::post('comments/update', [CommentController::class, 'update']);
-Route::post('posts/comments', [CommentController::class, 'comments']);
+Route::post('post/comments', [CommentController::class, 'comments']);
 
 //like
-Route::post('posts/like', [LikeController::class, 'like']);
+Route::post('post/like', [LikeController::class, 'like']);
 
 //upload photo post
 Route::post('save_user_info', [AuthController::class, 'saveUserInfo']);
