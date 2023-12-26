@@ -57,7 +57,7 @@ class ProfileController extends Controller
 
 
 
-    public function get_profile(Request $request)
+public function get_profile(Request $request)
 {
     $user = auth()->user();
 
@@ -67,14 +67,18 @@ class ProfileController extends Controller
         $imageUrl = url('images/' . $user->profile_photo);
 
         return response()->json([
-            'message' => 'Profile image retrieved successfully',
-            'user' => $user,
-            'image_url' => $imageUrl,
+            'message' => 'Profile information retrieved successfully',
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'profile_photo_url' => $imageUrl,
+            ],
         ], 200);
     } else {
         return response()->json(['error' => 'Image not found'], 404);
     }
 }
+
 
 public function edit_user($id,Request $request)
 {
