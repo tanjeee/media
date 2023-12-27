@@ -17,20 +17,22 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('refresh', 'refresh');
 });
 
-//profile photo
+
 Route::middleware('auth:api')->group(function () {
+
+    //Manage profile photo 
     Route::post('/profile/update-profile', [ProfileController::class, 'update_profile']);
     Route::post('/profile/get-profile', [ProfileController::class, 'get_profile']);
-    //Edit user
+    
+    //Edit username
     Route::post('/profile/edit-username/{id}', [ProfileController::class, 'edit_user']);
-});
 
-//post
-Route::middleware('auth:api')->group(function () {
-    Route::post('post/create', [PostController::class, 'create']);
+    //Manage post
+    Route::any('post/create', [PostController::class, 'create']);
     Route::post('post/delete', [PostController::class, 'delete']);
     Route::post('post/update', [PostController::class, 'update']);
     Route::get('post', [PostController::class, 'posts']);
+
 });
 
 
