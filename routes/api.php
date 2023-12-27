@@ -25,7 +25,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/profile/get-profile', [ProfileController::class, 'get_profile']);
     
     //Edit username
-    Route::post('/profile/edit-username/{id}', [ProfileController::class, 'edit_user']);
+    Route::any('/profile/edit-username/{id}', [ProfileController::class, 'edit_user']);
 
     //Manage post
     Route::any('post/create', [PostController::class, 'create']);
