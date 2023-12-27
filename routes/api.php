@@ -26,10 +26,13 @@ Route::middleware('auth:api')->group(function () {
 });
 
 //post
-Route::post('post/create', [PostController::class, 'create']);
-Route::post('post/delete', [PostController::class, 'delete']);
-Route::post('post/update', [PostController::class, 'update']);
-Route::get('post', [PostController::class, 'posts']);
+Route::middleware('auth:api')->group(function () {
+    Route::post('post/create', [PostController::class, 'create']);
+    Route::post('post/delete', [PostController::class, 'delete']);
+    Route::post('post/update', [PostController::class, 'update']);
+    Route::get('post', [PostController::class, 'posts']);
+});
+
 
 //comment
 Route::post('comments/create', [CommentController::class, 'create']);
