@@ -42,6 +42,7 @@ class PostController extends Controller
                 'message'=>'Unauthorized user'
             ]);
         }
+        
         $post->desc = $request->desc;
         $post->update();
         return response()->json([
